@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEAKEAS | Premium Fitness Club</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 </head>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <nav>
+        <nav class="navigation-bar">
             <div class="logo">
                 <img src="Components/home-image/gym-logo.png" alt="logo">
             </div>
@@ -42,20 +42,18 @@
                 <div class="insta"><i class="ri-instagram-line"></i></div>
                 <div class="wa"><i class="ri-whatsapp-line"></i></div>
             </div>
-                
         </nav>
 
         <div class="home">
-            <video src="Components/all-videos/gym-bg-video.mp4" loop autoplay muted class="hero-video"></video>
+            <video src="Components/all-videos/gym-bg-video.mp4" loop autoplay muted playsinline class="hero-video"></video>
 
             <div class="hero-content">
                 <div class="hero-left">
-                    <h1>Oscer: <span class="h-hl">Building</span> the <br> Foundation to Wellness</h1>
+                    <h1 id="hero-text">Oscer: <span class="h-hl">Building</span> the <br> Foundation to Wellness</h1>
                     <p>The First Corporate Boutique Gym in Dhaka</p>
                 </div>
                 <div class="hero-right">
                     <div class="hero-btn">
-                        <!-- From Uiverse.io by AatreyuShau -->
                         <button class="hero-content-btn">
                         <svg
                             class="hero-content-btn-cosm"
@@ -234,7 +232,7 @@
                 <article class="gym-room__card">
                     <div class="gym-room__card-inner">
                     <img class="gym-room__img" alt="Gym floor" draggable="false"
-                        src="Components/Gym-Album/gym2.jpg" loading="lazy"
+                        src="https://images.unsplash.com/photo-1778828450059-f39d5bbb01af?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Z3ltJTIwZmxvb3J8ZW58MHx8MHx8fDA%3D" loading="lazy"
   decoding="async" />
                     <span class="gym-room__label">Gym Floor</span>
                     </div>
@@ -243,26 +241,25 @@
                 <article class="gym-room__card">
                     <div class="gym-room__card-inner">
                     <img class="gym-room__img" alt="Cardio Floor" draggable="false"
-                        src="Components/Gym-Album/gym11.webp" loading="lazy"
+                        src="https://images.unsplash.com/photo-1765728617805-b9f22d64e5b3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Z3ltJTIwZmxvb3J8ZW58MHx8MHx8fDA%3D" loading="lazy"
   decoding="async" />
                     <span class="gym-room__label">Cardio Floor</span>
                     </div>
                 </article>
 
-
                 <article class="gym-room__card">
                     <div class="gym-room__card-inner">
-                    <img class="gym-room__img" alt="Shadow" draggable="false"
-                        src="Components/gym-img/balconny.jpg" loading="lazy"
+                    <img class="gym-room__img" alt="weights" draggable="false"
+                        src="https://plus.unsplash.com/premium_photo-1672280783618-4f1b70d125f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGd5bSUyMGZsb29yfGVufDB8fDB8fHww" loading="lazy"
   decoding="async" />
-                    <span class="gym-room__label">Gym Balcony</span>
+                    <span class="gym-room__label">Weights</span>
                     </div>
                 </article>
 
                 <article class="gym-room__card">
                     <div class="gym-room__card-inner">
                     <img class="gym-room__img" alt="Trainer" draggable="false"
-                        src="Components/gym-img/trainer.jpg" loading="lazy"
+                        src="https://images.unsplash.com/photo-1696564006617-1a85ba3a8f3e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z3ltJTIwdHJhaW5lcnxlbnwwfHwwfHx8MA%3D%3D" loading="lazy"
   decoding="async" />
                     <span class="gym-room__label">Trainer</span>
                     </div>
@@ -271,9 +268,9 @@
                 <article class="gym-room__card">
                     <div class="gym-room__card-inner">
                     <img class="gym-room__img" alt="Terracotta" draggable="false"
-                        src="Components/Gym-Album/gym8.jpg" loading="lazy"
+                        src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8eW9nYXxlbnwwfHwwfHx8MA%3D%3D" loading="lazy"
   decoding="async" />
-                    <span class="gym-room__label">Weights</span>
+                    <span class="gym-room__label">Yoga</span>
                     </div>
                 </article>
 
@@ -340,34 +337,16 @@
             <!-- Social Icons (Remix Icon) -->
             <div class="footer-socials" aria-label="Social media links">
 
-                <a
-                href="#"
-                class="social-link"
-                aria-label="Facebook"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                <i class="ri-facebook-circle-fill" aria-hidden="true"></i>
+                <a href="#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                    <i class="ri-facebook-circle-fill" aria-hidden="true"></i>
                 </a>
 
-                <a
-                href="#"
-                class="social-link"
-                aria-label="Instagram"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                <i class="ri-instagram-line" aria-hidden="true"></i>
+                <a href="#" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <i class="ri-instagram-line" aria-hidden="true"></i>
                 </a>
 
-                <a
-                href="#"
-                class="social-link"
-                aria-label="WhatsApp"
-                target="_blank"
-                rel="noopener noreferrer"
-                >
-                <i class="ri-whatsapp-line" aria-hidden="true"></i>
+                <a href="#" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                    <i class="ri-whatsapp-line" aria-hidden="true"></i>
                 </a>
 
             </div>
@@ -382,5 +361,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
+
+    
 </body>
 </html>
