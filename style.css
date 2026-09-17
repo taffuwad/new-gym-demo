@@ -63,6 +63,96 @@
     main{ position: relative; width: 100%; }
 
     /* ============================================================
+       SITE PRELOADER (Uiverse.io by Subaashbala)
+       ============================================================ */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      background: #05070a;
+      z-index: 999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+      transition: opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+                  visibility 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .loader-overlay.is-loaded {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader {
+      --ANIMATION-DELAY-MULTIPLIER: 70ms;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      height: 3.5rem;
+    }
+    .loader span {
+      padding: 0;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      letter-spacing: -5rem;
+      animation-delay: 0s;
+      transform: translateY(4rem);
+      animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
+    }
+    .loader .l {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0);
+    }
+    .loader .o {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1);
+    }
+    .loader .a {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2);
+    }
+    .loader .d {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3);
+    }
+    .loader .ispan {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4);
+    }
+    .loader .n {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5);
+    }
+    .loader .g {
+      animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6);
+    }
+    .letter {
+      width: fit-content;
+      height: 3rem;
+    }
+    .i {
+      margin-inline: 5px;
+    }
+    .loader-overlay .loader svg path {
+      fill: #ffffff;
+    }
+
+    @keyframes hideAndSeek {
+      0% {
+        transform: translateY(4rem);
+      }
+      100% {
+        transform: translateY(0rem);
+      }
+    }
+
+    /* ============================================================
        MOBILE NAV
        ============================================================ */
     .mobile-nav{

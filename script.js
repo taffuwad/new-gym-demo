@@ -633,12 +633,59 @@
       }, 0.9);
     };
 
-    // Initialize once custom fonts are loaded to avoid incorrect splits
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(initHeroAnimation);
+    /* ------------------------------------------------------------
+       9. SITE PRELOADER & HERO ENTRANCE COORDINATION
+    ------------------------------------------------------------ */
+    const preloader = document.getElementById('sitePreloader');
+    let heroAnimationTriggered = false;
+
+    const startHero = () => {
+      if (heroAnimationTriggered) return;
+      heroAnimationTriggered = true;
+      if (typeof initHeroAnimation === 'function') {
+        initHeroAnimation();
+      }
+    };
+
+    const hidePreloader = () => {
+      if (!preloader || preloader.classList.contains('is-loaded')) {
+        startHero();
+        return;
+      }
+
+      preloader.classList.add('is-loaded');
+
+      // Seamlessly trigger hero animation as preloader dissolves
+      setTimeout(() => {
+        startHero();
+      }, 150);
+
+      // Clean up DOM after transition finishes
+      setTimeout(() => {
+        if (preloader && preloader.parentNode) {
+          preloader.remove();
+        }
+      }, 650);
+    };
+
+    const handleWindowLoad = () => {
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          setTimeout(hidePreloader, 400);
+        });
+      } else {
+        setTimeout(hidePreloader, 400);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      handleWindowLoad();
     } else {
-      window.addEventListener("load", initHeroAnimation);
+      window.addEventListener('load', handleWindowLoad);
     }
+
+    // Safety fallback: dismiss preloader if any resource stalls
+    setTimeout(hidePreloader, 3500);
 
     /* ------------------------------------------------------------
        10. MOBILE MENU DRAWER TOGGLE
