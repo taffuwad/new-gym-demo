@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery &amp; FAQ — southoscer</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet"/>
+
+  <style>
+    /* ============================================================
+       0. RESET / TOKENS
+       ============================================================ */
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@500;600;700;800&display=swap");
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
+    :root {
+      --red-color: rgb(255, 37, 37);
+      --aa-bg-soft: #f8f0f0;
+      --aa-ink: #0c0c0e;
+      --aa-ink-soft: #6f6e75;
+      --aa-dark: #0b0b0c;
+      --aa-dark-2: #111113;
+      --aa-white: #ffffff;
+      --aa-muted: #a5a5a5;
+      --aa-accent: #c9a24d;
+      --aa-line-dark: rgba(255, 255, 255, 0.14);
+      --aa-ease: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    @font-face {
+      font-family: 'main';
+      src: url('../Components/fonts/august.ttf') format('truetype');
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'para';
+      src: url('../Components/fonts/csbarega-regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    body {
+      margin: 0;
+      background: var(--aa-bg-soft);
+      color: var(--aa-ink);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    img { display: block; }
+
+    :where(a, button, [tabindex]):focus-visible {
+      outline: 2px solid rgb(255, 37, 37);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ============================================================
+       1. GALLERY — HERO
+       ============================================================ */
+    .gallery-section {
+      position: relative;
+      background: var(--aa-bg-soft);
+    }
+
+    .gallery-hero {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: clamp(220px, 30vh, 360px);
+      min-height: 220px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #0a0a0b;
+    }
+
+    .gallery-hero__bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+      z-index: -2;
+      will-change: transform;
+    }
+
+    .gallery-hero__scrim {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.55) 0%,
+          rgba(0, 0, 0, 0.42) 45%,
+          rgba(0, 0, 0, 0.62) 100%
+        ),
+        rgba(0, 0, 0, 0.32);
+    }
+
+    .gallery-hero__title {
+        text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      padding: 0 20px;
+      max-width: 1000px;
+      text-align: center;
+      font-family: 'main',sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 4.5rem);
+      line-height: 1.04;
+      letter-spacing: 0.05em;
+      color: var(--aa-white);
+      text-wrap: balance;
+    }
+
+    /* ============================================================
+       2. GALLERY — GRID
+       ============================================================ */
+    .gallery-body {
+      padding: clamp(38px, 5.5vw, 88px) 0 clamp(64px, 8vw, 118px);
+      background: var(--aa-bg-soft);
+    }
+
+    .gallery-container {
+      width: min(100% - 40px, 1400px);
+      margin-inline: auto;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .gallery-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: #e8e0e0;
+      overflow: hidden;
+      cursor: zoom-in;
+      -webkit-tap-highlight-color: transparent;
+      will-change: transform, opacity;
+    }
+
+    .gallery-item__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1);
+      transition: transform 0.8s var(--aa-ease), filter 0.6s ease;
+      will-change: transform;
+    }
+
+    .gallery-item__veil {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.05) 30%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+      transition: opacity 0.55s ease;
+      pointer-events: none;
+    }
+
+    .gallery-item__label {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      z-index: 2;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.45s ease, transform 0.6s var(--aa-ease);
+      pointer-events: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .gallery-item:hover .gallery-item__img { transform: scale(1.035); }
+      .gallery-item:hover .gallery-item__veil { opacity: 1; }
+      .gallery-item:hover .gallery-item__label {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .gallery-item:focus-visible .gallery-item__veil { opacity: 1; }
+    .gallery-item:focus-visible .gallery-item__label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       3. LIGHTBOX
+       ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 6, 7, 0.96);
+      opacity: 1;
+      touch-action: none;
+      padding: 0;
+    }
+
+    .lightbox.is-open { display: flex; }
+
+    .lb-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 72px clamp(48px, 8vw, 120px);
+    }
+
+    .lb-img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 2px;
+      box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+      will-change: transform, opacity;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lb-btn {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.35s ease, border-color 0.35s ease,
+        transform 0.35s var(--aa-ease);
+      backdrop-filter: blur(6px);
+    }
+
+    .lb-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .lb-btn svg { width: 17px; height: 17px; }
+
+    .lb-close { top: 22px; right: 22px; }
+    .lb-prev { left: 22px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 22px; top: 50%; transform: translateY(-50%); }
+
+    .lb-counter {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.72);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       4. FAQ SECTION
+       ============================================================ */
+    .faq-section {
+      position: relative;
+      background: var(--aa-dark);
+      color: var(--aa-white);
+      padding: clamp(72px, 9vw, 132px) 0 clamp(80px, 10vw, 140px);
+      overflow: hidden;
+    }
+
+    .faq-container {
+      width: min(100% - 40px, 1240px);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(40px, 6vw, 104px);
+      align-items: start;
+    }
+
+    .faq-left {
+      position: sticky;
+      top: 110px;
+    }
+
+    .faq-eyebrow {
+      margin: 0 0 22px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgb(255, 37, 37);
+    }
+
+    .faq-heading {
+      margin: 0;
+      font-family: 'main',sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.1rem, 4.2vw, 3.9rem);
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--aa-white);
+      text-wrap: balance;
+    }
+
+    .faq-desc {
+      margin: 24px 0 0;
+      max-width: 420px;
+      font-size: clamp(0.94rem, 1.05vw, 1.02rem);
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--aa-muted);
+    }
+
+    /* ---------- accordion ---------- */
+    .faq-list { border-top: 1px solid var(--aa-line-dark); }
+
+    .faq-item { border-bottom: 1px solid var(--aa-line-dark); }
+
+    .faq-q {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      min-height: 44px;
+      padding: 24px 0;
+      border: 0;
+      background: none;
+      color: var(--aa-white);
+      font-family: inherit;
+      font-size: clamp(0.96rem, 1.08vw, 1.06rem);
+      font-weight: 500;
+      line-height: 1.45;
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .faq-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: rgb(255, 37, 37);
+      font-variant-numeric: tabular-nums;
+      transition: opacity 0.35s ease;
+      padding-top: 2px;
+    }
+
+    .faq-text {
+      font-family: 'para' , sans-serif;
+      letter-spacing: 0.03rem;
+      transition: transform 0.5s var(--aa-ease), opacity 0.35s ease;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: none;
+      color: rgba(255, 255, 255, 0.75);
+      transition: color 0.35s ease;
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      transition: transform 0.5s var(--aa-ease), opacity 0.3s ease;
+    }
+
+    .faq-icon::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      transform: translateY(-50%);
+    }
+
+    .faq-icon::after {
+      left: 50%;
+      top: 0;
+      width: 1.5px;
+      height: 100%;
+      transform: translateX(-50%) scaleY(1);
+    }
+
+    .faq-q[aria-expanded="true"] .faq-icon::after {
+      transform: translateX(-50%) scaleY(0);
+    }
+
+    .faq-q[aria-expanded="true"] .faq-icon::before {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .faq-q:hover .faq-icon,
+    .faq-q[aria-expanded="true"] .faq-icon { color: rgb(255, 37, 37) ; }
+
+    @media (hover: hover) and (pointer: fine) {
+      .faq-q:hover .faq-text { transform: translateX(5px); }
+    }
+
+    .faq-a {
+      height: 0;
+      overflow: hidden;
+      will-change: height;
+    }
+
+    .faq-a__inner {
+      padding: 0 clamp(0px, 5vw, 56px) 26px 0;
+    }
+
+    .faq-a p {
+      margin: 0;
+      font-size: clamp(0.9rem, 1vw, 0.97rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--aa-muted);
+    }
+
+    /* ============================================================
+       5. RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1280px) {
+      .gallery-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .faq-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 48px;
+      }
+      .faq-left { position: static; }
+      .faq-desc { max-width: 560px; }
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .gallery-hero {
+        height: clamp(200px, 32vh, 280px);
+        min-height: 200px;
+      }
+      .gallery-hero__title { font-size: clamp(1.75rem, 6.6vw, 2.6rem); }
+      .gallery-container { width: calc(100% - 32px); }
+      .lb-stage { padding: 76px 20px; }
+      .lb-prev { left: 12px; }
+      .lb-next { right: 12px; }
+      .lb-close { top: 16px; right: 16px; }
+      .lb-btn { width: 42px; height: 42px; }
+      .faq-container { width: calc(100% - 32px); }
+      .faq-q { gap: 14px; padding: 20px 0; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+      }
+      .gallery-container { width: calc(100% - 24px); }
+      .gallery-body { padding-top: 28px; }
+      .faq-container { width: calc(100% - 32px); }
+      .faq-a__inner { padding-right: 0; }
+    }
+
+    @media (max-width: 375px) {
+      .gallery-grid { gap: 4px; }
+      .gallery-container { width: calc(100% - 20px); }
+    }
+
+    /* ============================================================
+       6. REDUCED MOTION
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+      .gallery-item__img { transition: none !important; }
+      .gallery-item:hover .gallery-item__img { transform: none !important; }
+    }
+
+    /* ============================================================
+       MOBILE NAV
+       ============================================================ */
+    .mobile-nav {
+      width: 100%;
+      display: none;
+      justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 9999;
+      padding: clamp(10px, 2vw, 16px) clamp(14px, 3vw, 24px);
+      background-color: transparent;
+      backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+    }
+    .mobile-nav.scrolled {
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .mobile-nav .ms-logo {
+      height: clamp(40px, 8vw, 54px);
+      width: clamp(100px, 24vw, 150px);
+    }
+    .mobile-nav .ms-logo img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+    .mobile-nav .ms-menu {
+      height: clamp(32px, 6vw, 40px);
+      width: clamp(70px, 20vw, 100px);
+      padding: 8px 12px;
+      background-color: #111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transform: rotate(180deg);
+      gap: 5px;
+      position: relative;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .mobile-nav .ms-menu .line1 {
+      width: 85%;
+      height: 2px;
+      background: var(--red-color);
+      border-radius: 4rem;
+      z-index: 2;
+    }
+    .mobile-nav .ms-menu .line2 {
+      width: 50%;
+      height: 2px;
+      background: var(--red-color);
+      border-radius: 4rem;
+      z-index: 2;
+    }
+    .mobile-nav .ms-menu::before {
+      content: '';
+      left: 0; top: 0;
+      height: 100%; width: 100%;
+      background: #222;
+      position: absolute;
+      transform: scaleY(0);
+      transition: 0.3s ease;
+      transform-origin: bottom;
+    }
+    .mobile-nav .ms-menu:hover::before { transform: scaleY(1); }
+
+    /* Mobile Drawer */
+    .mobile-menu-drawer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      background: rgba(5, 7, 10, 0.98);
+      backdrop-filter: blur(12px);
+      z-index: 9998;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.4s ease;
+    }
+    .mobile-menu-drawer.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .drawer-link {
+      font-family: 'main', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .drawer-link:hover { color: var(--red-color); }
+    .drawer-socials {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .drawer-social {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.25rem;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .drawer-social:hover { background: var(--red-color); color: #fff; }
+
+    /* ============================================================
+       DESKTOP NAV
+       ============================================================ */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: clamp(10px, 0.8vw, 18px) clamp(2rem, 4vw, 5rem);
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 9999;
+      background-color: transparent;
+      backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      box-shadow: none;
+      transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+    }
+    nav.scrolled {
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      padding: clamp(6px, 0.5vw, 12px) clamp(2rem, 4vw, 5rem);
+    }
+    nav .logo {
+      height: clamp(44px, 4.5vw, 80px);
+      width: clamp(110px, 11vw, 190px);
+      flex-shrink: 0;
+    }
+    nav .logo img {
+      height: 100%; width: 100%;
+      object-fit: contain;
+    }
+    nav .section {
+      display: flex;
+      gap: clamp(1rem, 2vw, 2.5rem);
+      text-transform: uppercase;
+    }
+    nav .section .nav-link {
+      display: block;
+      color: #fff;
+      font-size: clamp(0.85rem, 1vw, 1.1rem);
+      font-family: 'main', sans-serif;
+      font-weight: 100;
+      height: 1.1em;
+      line-height: 1.1em;
+      overflow: hidden;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    nav .nav-link:hover .letter {
+      transform: translateY(-100%);
+      font-family: 'main', sans-serif;
+    }
+    .nav-link .block:last-child { font-family: 'main', sans-serif; color: #fff; }
+    .nav-link .letter {
+      display: inline-block;
+      font-family: 'main', sans-serif;
+      transition: transform 0.6s ease;
+    }
+    .letter:nth-child(1){ transition-delay: 0s; }
+    .letter:nth-child(2){ transition-delay: 0.03s; }
+    .letter:nth-child(3){ transition-delay: 0.06s; }
+    .letter:nth-child(4){ transition-delay: 0.09s; }
+    .letter:nth-child(5){ transition-delay: 0.12s; }
+    .letter:nth-child(6){ transition-delay: 0.15s; }
+    .letter:nth-child(7){ transition-delay: 0.18s; }
+    .letter:nth-child(8){ transition-delay: 0.21s; }
+    .letter:nth-child(9){ transition-delay: 0.24s; }
+    .letter:nth-child(10){ transition-delay: 0.27s; }
+
+    .social {
+      display: flex;
+      gap: clamp(8px, 1vw, 18px);
+      align-items: center;
+    }
+    .social > div {
+      position: relative;
+      width: clamp(34px, 2.2vw, 46px);
+      height: clamp(34px, 2.2vw, 46px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    .social > div i {
+      font-size: clamp(1rem, 1.3vw, 1.4rem);
+      color: #fff;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      user-select: none;
+    }
+    .social .fb:hover { background-color: #1877F2; transform: scale(1.15) translateY(-3px); box-shadow: 0 8px 20px rgba(24,119,242,0.4); }
+    .social .fb:hover i { transform: rotate(12deg); }
+    .social .fb.active { background-color: #1877F2; box-shadow: 0 0 25px rgba(24,119,242,0.6), inset 0 0 15px rgba(24,119,242,0.3); }
+    .social .fb.active i { animation: pulse 0.6s ease; }
+
+    .social .insta:hover { background: linear-gradient(135deg, #FF5C5C, #FF2E7E, #9934D0, #5B3FDC); transform: scale(1.15) translateY(-3px); box-shadow: 0 8px 20px rgba(255,62,126,0.4); }
+    .social .insta:hover i { transform: rotate(-12deg); }
+    .social .insta.active { background: linear-gradient(135deg, #FF5C5C, #FF2E7E, #9934D0, #5B3FDC); box-shadow: 0 0 25px rgba(255,62,126,0.6), inset 0 0 15px rgba(255,62,126,0.3); }
+    .social .insta.active i { animation: pulse 0.6s ease; }
+
+    .social .wa:hover { background-color: #25D366; transform: scale(1.15) translateY(-3px); box-shadow: 0 8px 20px rgba(37,211,102,0.4); }
+    .social .wa:hover i { transform: rotate(12deg); }
+    .social .wa.active { background-color: #25D366; box-shadow: 0 0 25px rgba(37,211,102,0.6), inset 0 0 15px rgba(37,211,102,0.3); }
+    .social .wa.active i { animation: pulse 0.6s ease; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-nav { display: flex; }
+      nav { display: none; }
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .site-footer {
+      position: relative;
+      width: 100%;
+      min-height: 200px;
+      background-color: #000;
+      color: #F4F1E8;
+      padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.5rem);
+      border-top: 1px solid rgba(244, 241, 232, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
+    .footer-container {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: clamp(0.9rem, 2.5vh, 1.75rem);
+    }
+    .footer-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .footer-text p {
+      font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+      line-height: 1.6;
+      color: #F4F1E8;
+      letter-spacing: 0.01em;
+      margin: 0;
+    }
+    .footer-text p:last-child { color: #8A8A8A; }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(0.75rem, 2.5vw, 1.75rem);
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(34px, 2.5vw, 40px);
+      height: clamp(34px, 2.5vw, 40px);
+      color: #F4F1E8;
+      font-size: clamp(18px, 1.5vw, 22px);
+      line-height: 1;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .social-link i { transition: 0.3s ease; }
+    .social-link:hover,
+    .social-link:focus-visible {
+      color: #e20000;
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .social-link:focus-visible {
+      outline: 2px solid #C9A24D;
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ==========================================
+       MOBILE NAV
+       ========================================== -->
+  <div class="mobile-nav">
+    <div class="ms-logo">
+      <a href="../index.html"><img src="../Components/home-image/gym-logo.png" alt="logo"></a>
+    </div>
+    <div class="ms-menu" id="mobileMenuBtn" aria-label="Toggle Navigation">
+      <div class="line1"></div>
+      <div class="line2"></div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Drawer (Overlay) -->
+  <div class="mobile-menu-drawer" id="mobileDrawer">
+    <a href="../index.html" class="drawer-link">Home</a>
+    <a href="team.html" class="drawer-link">Team</a>
+    <a href="gallery.html" class="drawer-link">Gallery</a>
+    <a href="contact.html" class="drawer-link">Contact</a>
+    <div class="drawer-socials">
+      <a href="#" class="drawer-social" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+      <a href="#" class="drawer-social" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+      <a href="#" class="drawer-social" aria-label="WhatsApp"><i class="ri-whatsapp-line"></i></a>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       DESKTOP NAV
+       ========================================== -->
+  <nav class="navigation-bar">
+    <div class="logo">
+      <a href="../index.html"><img src="../Components/home-image/gym-logo.png" alt="logo"></a>
+    </div>
+    <div class="section">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="team.html" class="nav-link">Team</a>
+      <a href="gallery.html" class="nav-link">Gallery</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="social">
+      <div class="fb"><i class="ri-facebook-fill"></i></div>
+      <div class="insta"><i class="ri-instagram-line"></i></div>
+      <div class="wa"><i class="ri-whatsapp-line"></i></div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       GALLERY SECTION
+       ============================================================ -->
+  <section class="gallery-section" id="gallery" aria-labelledby="galleryTitle">
+
+    <!-- ---------- HERO ---------- -->
+    <div class="gallery-hero">
+      <img
+        class="gallery-hero__bg"
+        src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=75"
+        alt=""
+        aria-hidden="true"
+        onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra-hero/1920/700';"
+      />
+      <div class="gallery-hero__scrim" aria-hidden="true"></div>
+      <h1 class="gallery-hero__title" id="galleryTitle">Gallery of SOUTHOSCER</h1>
+    </div>
+
+    <!-- ---------- GRID ---------- -->
+    <div class="gallery-body">
+      <div class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+
+          <!-- ====================================================
+               REPLACE THE src VALUES BELOW WITH REAL southoscer
+               GALLERY IMAGES. Everything else stays untouched.
+               ==================================================== -->
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 1: Strength training floor">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=72"
+              alt="Strength training floor with racks and benches at southoscer"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra1/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 2: Cardio equipment zone">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=72"
+              alt="Cardio equipment zone with treadmills and cross trainers"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra2/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 3: Functional training area">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=72"
+              alt="Functional training area with open floor space"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra3/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 4: Free weights section">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=72"
+              alt="Free weights section with dumbbell racks at southoscer"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra4/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 5: Group training studio">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=72"
+              alt="Group training studio with mirrored walls"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra5/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 6: Cable and machine area">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=800&q=72"
+              alt="Cable and resistance machine area"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra6/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 7: Reception and lounge">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=800&q=72"
+              alt="Reception and member lounge area"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra7/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 8: Boxing and bag area">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1596357395217-80de13130e92?auto=format&fit=crop&w=800&q=72"
+              alt="Boxing and heavy bag training area"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra8/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 9: Stretching and mobility zone">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=800&q=72"
+              alt="Stretching and mobility zone with mats and stability balls"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra9/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 10: Training equipment detail">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&w=800&q=72"
+              alt="Close-up of training equipment at southoscer"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra10/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 11: Open workout floor">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=72"
+              alt="Open workout floor with natural light"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra11/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 12: Machine line-up">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1637430308606-86576d8fef3c?auto=format&fit=crop&w=800&q=72"
+              alt="Row of strength machines in the main training hall"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra12/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 13: Dumbbell rack">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=72"
+              alt="Dumbbell rack in the free weights area"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra13/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 14: Cardio row">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=72"
+              alt="Row of cardio machines along the window"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra14/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 15: Locker and changing area">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=800&q=72"
+              alt="Locker and changing area at southoscer"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra15/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+          <button class="gallery-item" type="button" aria-label="View gallery image 16: Studio and class space">
+            <img class="gallery-item__img" loading="lazy" width="800" height="600"
+              src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=72"
+              alt="Studio and class space with wooden flooring"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/aamra16/800/600';" />
+            <span class="gallery-item__veil" aria-hidden="true"></span>
+            <span class="gallery-item__label">View</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LIGHTBOX
+       ============================================================ -->
+  <div
+    class="lightbox"
+    id="lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Gallery image viewer"
+    aria-hidden="true"
+  >
+    <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Close gallery viewer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19" />
+      </svg>
+    </button>
+
+    <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Previous image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+    </button>
+
+    <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Next image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    <div class="lb-stage" id="lbStage">
+      <img class="lb-img" id="lbImg" src="" alt="" />
+    </div>
+
+    <div class="lb-counter" id="lbCounter" aria-live="polite">01 / 16</div>
+  </div>
+
+  <!-- ============================================================
+       FAQ SECTION
+       ============================================================ -->
+  <section class="faq-section" id="faq" aria-labelledby="faqHeading">
+    <div class="faq-container">
+
+      <!-- ---------- LEFT ---------- -->
+      <div class="faq-left">
+        <p class="faq-eyebrow">FAQ</p>
+        <h2 class="faq-heading" id="faqHeading">Have<br />Questions?</h2>
+        <p class="faq-desc">
+          Everything you need to know before visiting southoscer.
+        </p>
+      </div>
+
+      <!-- ---------- RIGHT ---------- -->
+      <div class="faq-right">
+        <div class="faq-list" id="faqList">
+
+          <!-- 01 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-1" aria-expanded="false" aria-controls="faq-a-1">
+                <span class="faq-num" aria-hidden="true">01</span>
+                <span class="faq-text">What are the opening hours?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-1" role="region" aria-labelledby="faq-q-1">
+              <div class="faq-a__inner">
+                <p>Please check with the southoscer team for the latest opening hours and holiday schedules.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-2" aria-expanded="false" aria-controls="faq-a-2">
+                <span class="faq-num" aria-hidden="true">02</span>
+                <span class="faq-text">Where is southoscer located?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-2" role="region" aria-labelledby="faq-q-2">
+              <div class="faq-a__inner">
+                <p>southoscer is located at its designated fitness facility. Contact the team for directions and location details.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-3" aria-expanded="false" aria-controls="faq-a-3">
+                <span class="faq-num" aria-hidden="true">03</span>
+                <span class="faq-text">What facilities are available?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3">
+              <div class="faq-a__inner">
+                <p>southoscer offers fitness equipment, training areas, cardio equipment, strength-training facilities and additional member amenities.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-4" aria-expanded="false" aria-controls="faq-a-4">
+                <span class="faq-num" aria-hidden="true">04</span>
+                <span class="faq-text">Do you offer personal training?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-4" role="region" aria-labelledby="faq-q-4">
+              <div class="faq-a__inner">
+                <p>Please contact the southoscer team to learn about personal training availability, trainers and session options.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 05 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-5" aria-expanded="false" aria-controls="faq-a-5">
+                <span class="faq-num" aria-hidden="true">05</span>
+                <span class="faq-text">Can I visit the gym before becoming a member?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-5" role="region" aria-labelledby="faq-q-5">
+              <div class="faq-a__inner">
+                <p>Contact the southoscer team to ask about visitor access, trial options and membership requirements.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 06 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-6" aria-expanded="false" aria-controls="faq-a-6">
+                <span class="faq-num" aria-hidden="true">06</span>
+                <span class="faq-text">Do you have membership plans?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6">
+              <div class="faq-a__inner">
+                <p>Membership options and pricing may vary. Contact southoscer for current plans and membership details.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 07 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-7" aria-expanded="false" aria-controls="faq-a-7">
+                <span class="faq-num" aria-hidden="true">07</span>
+                <span class="faq-text">Is there a dedicated ladies’ fitness area?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-7" role="region" aria-labelledby="faq-q-7">
+              <div class="faq-a__inner">
+                <p>Please contact the facility to confirm available ladies’ fitness areas, schedules and access details.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 08 -->
+          <div class="faq-item">
+            <h3 style="margin:0;">
+              <button class="faq-q" type="button" id="faq-q-8" aria-expanded="false" aria-controls="faq-a-8">
+                <span class="faq-num" aria-hidden="true">08</span>
+                <span class="faq-text">How can I contact southoscer?</span>
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-a" id="faq-a-8" role="region" aria-labelledby="faq-q-8">
+              <div class="faq-a__inner">
+                <p>Use the contact details provided on the website to speak directly with the southoscer team.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <!-- Text Block -->
+      <div class="footer-text">
+        <p>© 2026 southoscer. All rights reserved.</p>
+        <p>Demo website</p>
+      </div>
+
+      <!-- Social Icons (Remix Icon) -->
+      <div class="footer-socials" aria-label="Social media links">
+        <a href="#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+          <i class="ri-facebook-circle-fill" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <i class="ri-instagram-line" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+          <i class="ri-whatsapp-line" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+
+
+    // smooth scrolling---------------------------------------------------------------------
+
+        const lenis = new Lenis({
+      smoothWheel: true,
+      lerp: 0.05,
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+
+
+  (function () {
+    "use strict";
+
+    var hasGSAP = typeof window.gsap !== "undefined";
+    var hasST = hasGSAP && typeof window.ScrollTrigger !== "undefined";
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (hasGSAP && hasST) gsap.registerPlugin(ScrollTrigger);
+
+    var motionOK = hasGSAP && !reduced;
+
+    /* ==========================================================
+       1. HERO ANIMATION
+       ========================================================== */
+    (function heroIntro() {
+      var title = document.querySelector(".gallery-hero__title");
+      var scrim = document.querySelector(".gallery-hero__scrim");
+      var bg = document.querySelector(".gallery-hero__bg");
+      if (!title) return;
+
+      if (!motionOK) {
+        if (scrim) scrim.style.opacity = "1";
+        return;
+      }
+
+      gsap.set(scrim, { opacity: 0 });
+      gsap.set(title, { opacity: 0, y: 30 });
+
+      gsap.timeline({ delay: 0.12 })
+        .to(scrim, { opacity: 1, duration: 1.1, ease: "power2.out" })
+        .to(title, { opacity: 1, y: 0, duration: 1.05, ease: "expo.out" }, "-=0.85");
+
+      if (bg && hasST) {
+        gsap.to(bg, {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".gallery-hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+          }
+        });
+      }
+    })();
+
+    /* ==========================================================
+       2. GALLERY GRID REVEAL
+       ========================================================== */
+    (function gridReveal() {
+      if (!motionOK || !hasST) return;
+
+      var items = gsap.utils.toArray(".gallery-item");
+      items.forEach(function (item) {
+        gsap.from(item, {
+          y: 34,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 92%",
+            once: true
+          }
+        });
+      });
+    })();
+
+    /* ==========================================================
+       3. LIGHTBOX
+       ========================================================== */
+    (function lightbox() {
+      var box = document.getElementById("lightbox");
+      if (!box) return;
+
+      var stage = document.getElementById("lbStage");
+      var imgEl = document.getElementById("lbImg");
+      var counter = document.getElementById("lbCounter");
+      var closeBtn = document.getElementById("lbClose");
+      var prevBtn = document.getElementById("lbPrev");
+      var nextBtn = document.getElementById("lbNext");
+
+      var items = Array.prototype.slice.call(
+        document.querySelectorAll(".gallery-item")
+      );
+      if (!items.length) return;
+
+      var current = 0;
+      var lastFocused = null;
+      var isOpen = false;
+
+      function pad(n) {
+        return n < 10 ? "0" + n : String(n);
+      }
+
+      function render(i) {
+        current = ((i % items.length) + items.length) % items.length;
+        var source = items[current].querySelector("img");
+        if (!source) return;
+        imgEl.src = source.currentSrc || source.src;
+        imgEl.alt = source.alt || "";
+        counter.textContent = pad(current + 1) + " / " + pad(items.length);
+      }
+
+      function open(i) {
+        if (isOpen) return;
+        isOpen = true;
+        lastFocused = document.activeElement;
+
+        render(i);
+        box.classList.add("is-open");
+        box.setAttribute("aria-hidden", "false");
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+
+        if (motionOK) {
+          gsap.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.32, ease: "power2.out" });
+          gsap.fromTo(imgEl, { opacity: 0, scale: 0.965 },
+            { opacity: 1, scale: 1, duration: 0.55, ease: "power3.out", delay: 0.04 });
+        } else {
+          box.style.opacity = "1";
+        }
+
+        closeBtn.focus();
+      }
+
+      function close() {
+        if (!isOpen) return;
+        isOpen = false;
+
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        box.setAttribute("aria-hidden", "true");
+
+        if (motionOK) {
+          gsap.to(box, {
+            opacity: 0,
+            duration: 0.26,
+            ease: "power2.in",
+            onComplete: function () {
+              box.classList.remove("is-open");
+              box.style.opacity = "1";
+              imgEl.src = "";
+            }
+          });
+        } else {
+          box.classList.remove("is-open");
+          imgEl.src = "";
+        }
+
+        if (lastFocused && typeof lastFocused.focus === "function") {
+          lastFocused.focus();
+        }
+      }
+
+      function step(dir) {
+        render(current + dir);
+        if (motionOK) {
+          gsap.fromTo(imgEl, { opacity: 0, x: dir * 26 },
+            { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" });
+        }
+      }
+
+      /* ---- triggers ---- */
+      items.forEach(function (item, i) {
+        item.addEventListener("click", function () { open(i); });
+      });
+
+      closeBtn.addEventListener("click", close);
+      prevBtn.addEventListener("click", function () { step(-1); });
+      nextBtn.addEventListener("click", function () { step(1); });
+
+      /* ---- backdrop click ---- */
+      box.addEventListener("click", function (e) {
+        if (e.target === box || e.target === stage) close();
+      });
+
+      /* ---- keyboard ---- */
+      document.addEventListener("keydown", function (e) {
+        if (!isOpen) return;
+
+        if (e.key === "Escape") {
+          e.preventDefault();
+          close();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          step(-1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          step(1);
+        } else if (e.key === "Tab") {
+          var f = [closeBtn, prevBtn, nextBtn];
+          var first = f[0];
+          var last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      /* ---- touch swipe ---- */
+      var touchX = 0, touchY = 0, tracking = false;
+      box.addEventListener("touchstart", function (e) {
+        if (e.touches.length !== 1) return;
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+        tracking = true;
+      }, { passive: true });
+
+      box.addEventListener("touchend", function (e) {
+        if (!tracking) return;
+        tracking = false;
+        var t = e.changedTouches[0];
+        var dx = t.clientX - touchX;
+        var dy = t.clientY - touchY;
+        if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+          step(dx < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+    })();
+
+    /* ==========================================================
+       4. FAQ ACCORDION
+       ========================================================== */
+    (function faqAccordion() {
+      var buttons = document.querySelectorAll(".faq-q");
+
+      Array.prototype.forEach.call(buttons, function (btn) {
+        var panel = document.getElementById(btn.getAttribute("aria-controls"));
+        if (!panel) return;
+
+        btn.addEventListener("click", function () {
+          var isOpen = btn.getAttribute("aria-expanded") === "true";
+          btn.setAttribute("aria-expanded", isOpen ? "false" : "true");
+
+          if (!hasGSAP || reduced) {
+            panel.style.height = isOpen ? "0px" : "auto";
+            return;
+          }
+
+          if (isOpen) {
+            gsap.to(panel, { height: 0, duration: 0.42, ease: "power3.inOut" });
+          } else {
+            gsap.to(panel, { height: "auto", duration: 0.55, ease: "power3.out" });
+          }
+        });
+      });
+    })();
+
+    /* ==========================================================
+       5. FAQ REVEAL
+       ========================================================== */
+    (function faqReveal() {
+      if (!motionOK || !hasST) return;
+
+      var leftItems = document.querySelectorAll(".faq-left > *");
+      if (leftItems.length) {
+        gsap.from(leftItems, {
+          y: 30,
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".faq-section",
+            start: "top 78%",
+            once: true
+          }
+        });
+      }
+
+      var rows = document.querySelectorAll(".faq-item");
+      if (rows.length) {
+        gsap.from(rows, {
+          y: 24,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.06,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".faq-list",
+            start: "top 85%",
+            once: true
+          }
+        });
+      }
+    })();
+
+    /* ==========================================================
+       6. REFRESH ON LOAD / FONTS
+       ========================================================== */
+    if (hasST) {
+      window.addEventListener("load", function () {
+        ScrollTrigger.refresh();
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+          ScrollTrigger.refresh();
+        });
+      }
+    }
+  })();
+
+  /* ============================================================
+     NAV INTERACTIONS
+     ============================================================ */
+  // Nav Link Letter Split (hover effect)
+  document.querySelectorAll('.nav-link').forEach((navlink) => {
+    const innerText = navlink.innerText;
+    navlink.innerHTML = '';
+    const textContainer = document.createElement('div');
+    textContainer.classList.add('block');
+    for (let letter of innerText) {
+      const span = document.createElement('span');
+      span.innerText = letter.trim() === '' ? '\xa0' : letter;
+      span.classList.add('letter');
+      textContainer.appendChild(span);
+    }
+    navlink.appendChild(textContainer);
+    navlink.appendChild(textContainer.cloneNode(true));
+  });
+
+  // Social Icon Active State
+  document.querySelectorAll('.social > div').forEach((icon) => {
+    icon.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelectorAll('.social > div').forEach((el) => el.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Navbar Scroll Effect
+  const navEl = document.querySelector('nav');
+  const mobileNavEl = document.querySelector('.mobile-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      if (navEl) navEl.classList.add('scrolled');
+      if (mobileNavEl) mobileNavEl.classList.add('scrolled');
+    } else {
+      if (navEl) navEl.classList.remove('scrolled');
+      if (mobileNavEl) mobileNavEl.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
+  // Mobile Menu Drawer Toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  if (mobileMenuBtn && mobileDrawer) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenuBtn.classList.toggle('active');
+      mobileDrawer.classList.toggle('open');
+    });
+  }
+  </script>
+
+</body>
+</html>

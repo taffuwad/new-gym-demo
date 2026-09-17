@@ -554,75 +554,101 @@
     ------------------------------------------------------------ */
     gsap.registerPlugin(SplitText);
 
-    // Split text for hero headline and paragraph
-    const heroTitle = SplitText.create(".hero-content .hero-left h1", {
-      type: "words, chars",
-      wordsClass: "split-word",
-      charsClass: "split-char"
-    });
+    const initHeroAnimation = () => {
+      // Split text for hero headline and paragraph
+      const heroTitle = SplitText.create(".hero-content .hero-left h1", {
+        type: "words, chars",
+        wordsClass: "split-word",
+        charsClass: "split-char"
+      });
 
-    const heroSubtitle = SplitText.create(".hero-content .hero-left p", {
-      type: "words",
-      wordsClass: "split-word"
-    });
+      const heroSubtitle = SplitText.create(".hero-content .hero-left p", {
+        type: "words",
+        wordsClass: "split-word"
+      });
 
-    // Master Hero Timeline
-    const heroTl = gsap.timeline({
-      defaults: { ease: "power3.out" }
-    });
+      // Master Hero Timeline
+      const heroTl = gsap.timeline({
+        defaults: { ease: "power3.out" }
+      });
 
-    // 1. Background video smooth zoom & fade in
-    heroTl.from(".home .hero-video", {
-      scale: 1.15,
-      opacity: 0,
-      duration: 1.6,
-      ease: "power2.out"
-    }, 0);
+      // 1. Background video smooth zoom & fade in
+      heroTl.from(".home .hero-video", {
+        scale: 1.15,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power2.out"
+      }, 0);
 
-    // 2. Navigation bar & links entrance
-    heroTl.from("nav, .mobile-nav", {
-      yPercent: -100,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out"
-    }, 0.2);
+      // 2. Navigation bar & items entrance
+      heroTl.from("nav, .mobile-nav", {
+        yPercent: -100,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      }, 0.1);
 
-    heroTl.from(".logo, .section .nav-link > div, .ms-logo, .ms-menu", {
-      y: -100,
-      opacity: 0,
-      stagger: 0.07,
-      duration: 1.3,
-      ease: "power2.out"
-    }, 0.4);
-    heroTl.from(".social", {
-      x: 400,
-      duration: 0.7,
-    })
+      heroTl.from(".logo, .section .nav-link > div, .ms-logo, .ms-menu", {
+        y: -20,
+        opacity: 0,
+        stagger: 0.05,
+        duration: 0.8,
+        ease: "power2.out"
+      }, 0.3);
 
-    // 3. Hero Headline Chars stagger animation
-    heroTl.from(heroTitle.chars, {
-      yPercent: 120,
-      opacity: 0,
-      rotateX: -40,
-      stagger: 0.02,
-      duration: 0.9,
-      ease: "back.out(1.5)"
-    }, 0.5);
+      heroTl.from(" .social", {
+        x: 200,
+        opacity: 0,
+        stagger: 0.05,
+        ease: "power3.out"
 
-    // 4. Hero Subtitle Words stagger animation
-    heroTl.from(heroSubtitle.words, {
-      y: 25,
-      opacity: 0,
-      stagger: 0.03,
-      duration: 0.8,
-      ease: "power3.out"
-    }, 0.8);
+      })
 
-    // 5. Hero CTA Button pop in
-    heroTl.from(".hero-content .hero-right .hero-btn", {
-      x:-1000,
-      scale: 0.55,
-      opacity: 0,
-      duration: 1,
-      ease: "back.out(1.7)"
-    }, 0.9);
+      // 3. Hero Headline Chars stagger animation
+      heroTl.from(heroTitle.chars, {
+        yPercent: 120,
+        opacity: 0,
+        rotateX: -40,
+        stagger: 0.02,
+        duration: 0.9,
+        ease: "back.out(1.5)"
+      }, 0.5);
+
+      // 4. Hero Subtitle Words stagger animation
+      heroTl.from(heroSubtitle.words, {
+        y: 25,
+        opacity: 0,
+        stagger: 0.03,
+        duration: 0.8,
+        ease: "power3.out"
+      }, 0.8);
+
+      // 5. Hero CTA Button pop in
+      heroTl.from(".hero-content .hero-right .hero-btn", {
+        y: 40,
+        scale: 0.85,
+        opacity: 0,
+        duration: 1,
+        ease: "back.out(1.7)"
+      }, 0.9);
+    };
+
+    // Initialize once custom fonts are loaded to avoid incorrect splits
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(initHeroAnimation);
+    } else {
+      window.addEventListener("load", initHeroAnimation);
+    }
+
+    /* ------------------------------------------------------------
+       10. MOBILE MENU DRAWER TOGGLE
+    ------------------------------------------------------------ */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+
+    if (mobileMenuBtn && mobileDrawer) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenuBtn.classList.toggle('active');
+        mobileDrawer.classList.toggle('open');
+      });
+    }

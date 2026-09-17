@@ -29,7 +29,7 @@
       box-sizing: border-box;
       text-decoration: none;
       color: #fff;
-      font-family: 'par', sans-serif;
+      font-family: 'para', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -67,16 +67,15 @@
        ============================================================ */
     .mobile-nav{
       width: 100%;
-      display: flex;
+      display: none;
       justify-content: space-between;
-      /* align-items: center; */
+      align-items: center;
 
       position: fixed;
-      top: -0.6vw; left: 0;
+      top: 0; left: 0;
       z-index: 9999;
 
-      padding: clamp(8px, 1.2vw, 16px) clamp(12px, 2vw, 24px);
-      padding: 0;
+      padding: clamp(10px, 2vw, 16px) clamp(14px, 3vw, 24px);
       background-color: transparent;
       backdrop-filter: none;
       border-bottom: 1px solid transparent;
@@ -85,11 +84,11 @@
                   border-color 0.3s ease;
     }
 
-    /* .mobile-nav.scrolled {
+    .mobile-nav.scrolled {
       background-color: rgba(0, 0, 0, 0.95);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    } */
+    }
 
     .mobile-nav .ms-logo{
       height: clamp(46px, 10vw, 64px);
@@ -142,6 +141,58 @@
     }
     .mobile-nav .ms-menu:hover::before{ transform: scaleY(1); }
 
+    /* Mobile Drawer */
+    .mobile-menu-drawer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      background: rgba(5, 7, 10, 0.98);
+      backdrop-filter: blur(12px);
+      z-index: 9998;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.4s ease;
+    }
+    .mobile-menu-drawer.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .drawer-link {
+      font-family: 'main', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .drawer-link:hover { color: var(--red-color); }
+    .drawer-socials {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .drawer-social {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.25rem;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .drawer-social:hover { background: var(--red-color); color: #fff; }
+
     /* ============================================================
        DESKTOP NAV
        ============================================================ */
@@ -160,7 +211,11 @@
       backdrop-filter: none;
       border-bottom: 1px solid transparent;
       box-shadow: none;
-      transition: 0.5s ease;
+      transition: background-color 0.4s ease,
+                  backdrop-filter 0.4s ease,
+                  border-color 0.4s ease,
+                  box-shadow 0.4s ease,
+                  padding 0.4s ease;
     }
 
     nav.scrolled {
@@ -1001,6 +1056,9 @@
 
     @media (max-width: 768px){
       :root{ --pad-x: 1.25rem; }
+
+      .mobile-nav{ display: flex; }
+      nav{ display: none; }
 
       .hero-content{
         padding: clamp(5rem, 18vw, 8rem) clamp(1.25rem, 5vw, 2rem) clamp(2rem, 6vw, 3rem);
