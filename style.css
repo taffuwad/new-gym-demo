@@ -937,7 +937,7 @@
       margin-bottom: clamp(1.5rem, 5vh, 4.5rem);
     }
     .amenities-title{
-      font-family: "Syne", "Bebas Neue", "Impact", sans-serif;
+      font-family: "main", sans-serif;
       font-weight: 800;
       font-size: clamp(1.75rem, 4vw, 4.5rem);
       line-height: 1.05;
