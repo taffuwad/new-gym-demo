@@ -699,3 +699,12 @@
         mobileDrawer.classList.toggle('open');
       });
     }
+
+
+    // hero-btn--------------------------------------------
+
+    let memberBtn = document.querySelector('.hero-btn');
+
+    memberBtn.addEventListener('click', () => {
+      window.location.href = 'All-pages/contact.html'}
+    );
