@@ -1083,6 +1083,10 @@
       .mobile-nav .ms-menu{
         margin: 0;
       }
+      .mobile-nav .ms-logo{
+      height: clamp(46px, 4vw, 64px);
+      width:  clamp(120px, 30vw, 180px);
+    }
 
       .hero-content{
         flex-direction: column;
@@ -1179,8 +1183,15 @@
     }
 
     @media (max-width: 640px){
+
+      .mobile-nav .ms-logo{
+      height: clamp(46px, 4vw, 64px);
+      width:  clamp(120px, 35vw, 180px);
+    }
+
       .hero-content{
         padding: clamp(4.5rem, 22vw, 7rem) clamp(1.25rem, 5vw, 2rem) clamp(2rem, 8vw, 3rem);
+        
       }
       .hero-content .hero-left h1{
         font-size: clamp(1.75rem, 7.5vw, 2.4rem);
@@ -1196,6 +1207,12 @@
     }
 
     @media (max-width: 480px){
+
+      .mobile-nav .ms-logo{
+      height: clamp(36px, 3vw, 44px);
+      width:  clamp(120px, 40vw, 180px);
+    }
+
       .hero-content{
         padding: clamp(4rem, 20vw, 6rem) clamp(1rem, 5vw, 1.5rem) clamp(2rem, 8vw, 2.5rem);
       }
