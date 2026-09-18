@@ -37,12 +37,16 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      overflow-x: hidden;
+      scroll-behavior: auto;
       background: var(--gym-bg);
       color: var(--gym-fg);
       font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior: none;
+    }
+
+
+    body{
+         overflow-x: hidden;
     }
 
     @font-face {
